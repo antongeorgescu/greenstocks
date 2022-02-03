@@ -10,6 +10,7 @@ import json
 import requests_cache
 from bs4 import BeautifulSoup
 import pandas as pd
+from spacy.lang.en import English
 
 import warnings
 warnings.filterwarnings("ignore")
@@ -84,6 +85,7 @@ class TestStockInfoStats(unittest.TestCase):
 
         # show options expirations
         # print(stock.options)
+        
 
     def test_scrape_weather(self):
         page = requests.get("https://forecast.weather.gov/MapClick.php?lat=37.7772&lon=-122.4168",verify=False)
@@ -107,8 +109,30 @@ class TestStockInfoStats(unittest.TestCase):
         # article = BeautifulSoup(page.content, 'html.parser')
         # print(article.prettify())  
 
+    def test_entity_analysis(self):
+        fileId = 'ACLS_68223a2e-850a-11ec-90a0-98af655297b0' 
+        file = open(f'{self.DATA_DIR}\\articles\\{fileId}.html',"r",encoding="utf-8")
+        fileContent = file.read()
+        file.close()
+        parser = English()
+        parsedEx = parser(fileContent)
+ 
+        print("-------------- entities only ---------------")
+        # if you just want the entities and nothing else, you can do access the parsed examples "ents" property like this:
+        ents = list(parsedEx.ents)
+        tags={}
+        for entity in ents:
+            print(entity.label, entity.label_, ' '.join(t.orth_ for t in entity))
+            term=' '.join(t.orth_ for t in entity)
+            if ' '.join(term) not in tags:
+                tags[term]=[(entity.label, entity.label_)]
+            else:
+                tags[term].append((entity.label, entity.label_))
+        print(tags)
+
 if __name__ == '__main__':
     # unittest.main(TestStockInfoStats().test_load_stock_data())
     # unittest.main(TestStockInfoStats().test_scrape_weather())
-    unittest.main(TestStockInfoStats().test_scrape_stock_news())
+    # unittest.main(TestStockInfoStats().test_scrape_stock_news())
+    unittest.main(TestStockInfoStats().test_entity_analysis())
 
