@@ -12,17 +12,25 @@ from bs4 import BeautifulSoup
 import pandas as pd
 from spacy.lang.en import English
 import pickle
+import urllib.request
+
+from goose3 import Goose
+import nltk
+from nltk.corpus import stopwords
 
 import warnings
 warnings.filterwarnings("ignore")
+
+import os.path, sys
+sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)), os.pardir))
+from stringbuilder import StringBuilder
 
 class TestStockInfoStats(unittest.TestCase):
     def __init__(self):
         self.DATA_DIR = f'{os.path.dirname(os.path.abspath(__file__))}\\data'   
         # example of creating a test dataset and splitting it into train and test sets
 
-    def test_load_stock_data(self):
-        ticker = 'ACLS'
+    def test_load_stock_data(self,ticker):
         
         # session = requests.Session()
         
@@ -86,7 +94,80 @@ class TestStockInfoStats(unittest.TestCase):
 
         # show options expirations
         # print(stock.options)
+
+    def test_aggregated_tokens(self,ticker):
         
+        # session = requests.Session()
+        
+        session = requests_cache.CachedSession('yfinance.cache')
+        session.verify = False
+        
+        stock = yfinance.Ticker(ticker,session)
+
+        stockInfoAggregated = StringBuilder()
+
+        # get stock info
+        stockInfo = stock.info
+        businessDescription = stockInfo['longBusinessSummary']
+        stockInfoAggregated.Append(f'{businessDescription} ')
+
+        # show news
+        dataStockNews = stock.news
+        # dataStockNews = json.loads(stock.news)
+        dfStockNews = pd.json_normalize(dataStockNews)
+        dfStockNews.to_csv(f'{self.DATA_DIR}\\stocknews_{ticker}.csv')
+
+        g = Goose()
+        for d in dataStockNews:
+            stockInfoAggregated.Append(f'{d["title"]} ')
+            response = requests.get(d['link'],verify=False)
+            article = g.extract(raw_html = response.text)
+            article_clean = article.cleaned_text
+            stockInfoAggregated.Append(f'{article_clean} ')
+        g.close()
+
+        with open(f'{self.DATA_DIR}\\aggtokens_{ticker}.txt', 'w') as f:
+            fcontent = stockInfoAggregated.Text().replace('\n',' ')
+            f.write(fcontent)
+
+        tokens = [t for t in fcontent.split()]
+        
+        clean_tokens = tokens[:]
+        
+        stopworden = stopwords.words('english')
+
+        # add more stop words
+        more =  ['a','the','•','-','&',' ','None','per','none','company''s','Company''s']
+        for el in more:
+            stopworden.append(el)
+            stopworden.append(el.capitalize())
+        
+        for token in tokens:
+            if token in stopworden:
+                clean_tokens.remove(token)
+
+        freq = nltk.FreqDist(clean_tokens)
+
+        green_tokens= 0
+        green_focus = 0 # calculate as sums of occurrences of green tokens in the sum of tokens for first 10 indexes
+        sum_tokens_10 = 0
+        index = 0
+        for key,val in freq.items():
+            index = index + 1
+            print (str(key) + ':' + str(val))
+            if index <= 10:
+                # get sum of tokens for first 10 indexes
+                sum_tokens_10 = sum_tokens_10 + val
+            if str(key).upper() in ['CLEAN','ENERGY','GREEN','PLANET','EMMISSIONS','NATURAL']:
+                if index <= 10:
+                    # if g-tokens found in the first 10 indexes, get a bonus
+                    green_focus = green_focus + val * (10-index)
+                green_tokens = green_tokens + val
+        freq.plot(20,cumulative=False)
+
+        green_focus = round(green_focus / sum_tokens_10,2)
+        green_density = round(100*float(green_tokens/len(freq.items())),2)
+        print('Total Tokens:',len(freq.items()),' G-Tokens:',green_tokens,' Green Focus:',green_focus,' Green Density:',green_density)
 
     def test_scrape_weather(self):
         page = requests.get("https://forecast.weather.gov/MapClick.php?lat=37.7772&lon=-122.4168",verify=False)
@@ -131,6 +212,81 @@ class TestStockInfoStats(unittest.TestCase):
                 tags[term].append((entity.label, entity.label_))
         print(tags)
 
+    # Exteding stopwrods to dictionaires existing in the following folder
+    # C:\Users\ag4488\AppData\Roaming\Python\Python37\site-packages\nimbusml\internal\core\feature_extraction\text
+
+    def test_clean_article(self):
+        
+        fileId = 'ACLS_68223a2e-850a-11ec-90a0-98af655297b0' 
+        
+        file = open(f'{self.DATA_DIR}\\articles\\{fileId}.html',"r",encoding="utf-8")
+        fileContent = file.read()
+        file.close()
+
+        g = Goose()
+        article = g.extract(raw_html=fileContent)
+        cleanContent = article.cleaned_text
+        print(cleanContent)
+        g.close()
+
+        tokens = [t for t in cleanContent.split()]
+        
+        clean_tokens = tokens[:]
+        
+        stopworden = stopwords.words('english')
+
+        # add more stop words
+        more =  ['a','the','•','-','&']
+        for el in more:
+            stopworden.append(el)
+            stopworden.append(el.capitalize())
+        
+        for token in tokens:
+            if token in stopworden:
+                clean_tokens.remove(token)
+
+        freq = nltk.FreqDist(clean_tokens)
+
+        for key,val in freq.items():
+            print (str(key) + ':' + str(val))
+        freq.plot(20,cumulative=False)
+
+    def test_clean_article_url(self):
+        
+        fileId = 'ACLS_68223a2e-850a-11ec-90a0-98af655297b0' 
+        
+        file = open(f'{self.DATA_DIR}\\articles\\{fileId}.html',"r",encoding="utf-8")
+        fileContent = file.read()
+        file.close()
+
+        g = Goose()
+        article = g.extract(raw_html=fileContent)
+        cleanContent = article.cleaned_text
+        print(cleanContent)
+        g.close()
+
+        tokens = [t for t in cleanContent.split()]
+        
+        clean_tokens = tokens[:]
+        
+        stopworden = stopwords.words('english')
+
+        # add more stop words
+        more =  ['a','the','•','-','&']
+        for el in more:
+            stopworden.append(el)
+            stopworden.append(el.capitalize())
+        
+        for token in tokens:
+            if token in stopworden:
+                clean_tokens.remove(token)
+
+        freq = nltk.FreqDist(clean_tokens)
+
+        for key,val in freq.items():
+            print (str(key) + ':' + str(val))
+        freq.plot(20,cumulative=False)
+
     def test_list_sp500_stocks(self):
         #resp = requests.get('http://en.wikipedia.org/wiki/List_of_S%26P_500_companies')
         session = requests.Session()
@@ -167,9 +323,11 @@ class TestStockInfoStats(unittest.TestCase):
         
         
 if __name__ == '__main__':
-    # unittest.main(TestStockInfoStats().test_load_stock_data())
+    # unittest.main(TestStockInfoStats().test_load_stock_data('CLNE'))
+    unittest.main(TestStockInfoStats().test_aggregated_tokens('CLNE'))
     # unittest.main(TestStockInfoStats().test_scrape_weather())
     # unittest.main(TestStockInfoStats().test_scrape_stock_news())
     # unittest.main(TestStockInfoStats().test_entity_analysis())
-    unittest.main(TestStockInfoStats().test_list_sp500_stocks())
+    # unittest.main(TestStockInfoStats().test_list_sp500_stocks())
+    # unittest.main(TestStockInfoStats().test_clean_article())
 

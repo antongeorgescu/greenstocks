@@ -32,3 +32,6 @@ def api_stocks_filtered():
     #tickers = gt.get_biggest_n_tickers(10, sectors=None)
     tickers = gt.get_tickers()[:5]
     return jsonify(tickers)
+
+
+    
