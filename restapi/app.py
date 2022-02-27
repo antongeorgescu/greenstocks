@@ -30,11 +30,12 @@ def home():
 app.add_url_rule('/api/v1/test', view_func=tests.test)
 app.add_url_rule('/api/v1/resources/books/all', view_func=tests.apitest_books_all)
 app.add_url_rule('/api/v1/resources/stocks/filtered', view_func=tests.api_stocks_filtered)
-app.add_url_rule('/api/v1/resources/stocks/greenscore/<ticker>', view_func=model.get_stock_news)
-app.add_url_rule('/api/v1/resources/cryptofile', view_func=tests.api_stocks_filtered)
+app.add_url_rule('/api/v1/resources/stocks/news/<ticker>', view_func=model.get_stock_news)
+app.add_url_rule('/api/v1/resources/stocks/greenscore/<ticker>', view_func=model.get_aggregated_tokens)
+app.add_url_rule('/api/v1/resources/stocks/profile/<ticker>', view_func=model.get_stock_profile)
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port =5000,debug=True)
+    app.run(host='127.0.0.1', port =5099,debug=True)
 
 
 

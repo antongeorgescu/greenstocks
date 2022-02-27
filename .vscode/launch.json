@@ -17,7 +17,8 @@
             "request": "launch",
             "module": "flask",
             "env": {
-                "FLASK_APP": "app.py",
+                "FLASK_APP": "restapi/app.py",
+                "SERVER_NAME": "localhost:5099",
                 "FLASK_ENV": "development",
                 "FLASK_DEBUG": "0"
             },
