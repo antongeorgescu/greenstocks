@@ -23,7 +23,7 @@ warnings.filterwarnings("ignore")
 
 import os.path, sys
 sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)), os.pardir))
-from stringbuilder import StringBuilder
+from utils import StringBuilder
 
 class TestStockInfoStats(unittest.TestCase):
     def __init__(self):

@@ -203,7 +203,7 @@ onnxruntime==1.8.0
 opt-einsum==3.3.0
 outcome==1.1.0
 packaging==21.3
-pandas==0.25.3
+pandas==1.3.5
 pandas-market-calendars==3.2
 pandocfilters==1.5.0
 papermill==1.2.1
@@ -319,6 +319,6 @@ Werkzeug==2.0.2
 widgetsnbextension==3.5.2
 wrapt==1.12.1
 wsproto==1.0.0
-yfinance==0.1.66
+yfinance==0.1.70
 zict==2.0.0
 zipp==3.7.0

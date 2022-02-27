@@ -9,12 +9,14 @@ else:
 
 import os
 
-from flask import Flask
+from flask import Flask, jsonify, session
+from flask_session import Session
 
 import datetime as dt
 
 # import declared  
 import tests
+import model
 
 app = Flask(__name__)
 
@@ -28,6 +30,7 @@ def home():
 app.add_url_rule('/api/v1/test', view_func=tests.test)
 app.add_url_rule('/api/v1/resources/books/all', view_func=tests.apitest_books_all)
 app.add_url_rule('/api/v1/resources/stocks/filtered', view_func=tests.api_stocks_filtered)
+app.add_url_rule('/api/v1/resources/stocks/greenscore/<ticker>', view_func=model.get_stock_news)
 app.add_url_rule('/api/v1/resources/cryptofile', view_func=tests.api_stocks_filtered)
 
 if __name__ == "__main__":
