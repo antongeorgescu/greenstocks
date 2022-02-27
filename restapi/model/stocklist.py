@@ -44,5 +44,5 @@ def get_stocks_sp500():
     dfSp500Tickers = pd.json_normalize(tickers)
     # dfSp500Tickers.to_csv(f'{DATA_DIR}\\sp500tickers.csv')
     print(dfSp500Tickers.head(30))
-    return json.dump(tickers)
+    return json.dumps(tickers)
 
