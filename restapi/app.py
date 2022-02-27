@@ -29,7 +29,8 @@ def home():
 # test routing
 app.add_url_rule('/api/v1/test', view_func=tests.test)
 app.add_url_rule('/api/v1/resources/books/all', view_func=tests.apitest_books_all)
-app.add_url_rule('/api/v1/resources/stocks/filtered', view_func=tests.api_stocks_filtered)
+app.add_url_rule('/api/v1/resources/stocks/list', view_func=model.get_stocks_list)
+app.add_url_rule('/api/v1/resources/stocks/sp500/list', view_func=model.get_stocks_sp500)
 app.add_url_rule('/api/v1/resources/stocks/news/<ticker>', view_func=model.get_stock_news)
 app.add_url_rule('/api/v1/resources/stocks/greenscore/<ticker>', view_func=model.get_aggregated_tokens)
 app.add_url_rule('/api/v1/resources/stocks/profile/<ticker>', view_func=model.get_stock_profile)
