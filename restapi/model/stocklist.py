@@ -66,7 +66,8 @@ def get_stocklist_sp500():
     
     # extract list of sector and subindustry
     lst_sectors = dfallstocks[['sector','subindustry']]
+    lst_sectors.drop_duplicates(inplace=True,ignore_index=True)
     
     print(lst_sectors.head(30))
-    result = lst_sectors[['sector','subindustry']].to_json(orient='table',index=False)
+    result = lst_sectors.to_json(orient='table',index=False)
     return json.dumps(json.loads(result)['data'])
