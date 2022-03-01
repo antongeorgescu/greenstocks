@@ -64,15 +64,6 @@ def get_stock_profile(ticker):
     stock = yfinance.Ticker(ticker,session)
 
     stock_profile = []
-    
-    # show actions (dividends, splits)
-    # print(stock.actions)
-
-    # show dividends
-    # print(stock.dividends)
-
-    # show splits
-    # print(stock.splits)
 
     # show financials
     stock_profile.append(('stock_financials',stock.financials))

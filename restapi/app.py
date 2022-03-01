@@ -26,10 +26,7 @@ def home():
     now = dt.datetime.now()
     return f'[{now.strftime("%d/%m/%Y %H:%M:%S")}] Greenstocks Api Server up and running...'
 
-# test routing
-app.add_url_rule('/api/v1/test', view_func=tests.test)
-app.add_url_rule('/api/v1/resources/books/all', view_func=tests.apitest_books_all)
-app.add_url_rule('/api/v1/resources/stocks/list', view_func=model.get_stocks_list)
+# stock data routing
 app.add_url_rule('/api/v1/resources/stocks/sp500/profile/<usecache>', view_func=model.get_stockprofiles_sp500)
 app.add_url_rule('/api/v1/resources/stocks/sp500/list', view_func=model.get_stocklist_sp500)
 app.add_url_rule('/api/v1/resources/stocks/news/<ticker>', view_func=model.get_stock_news)

@@ -7,12 +7,6 @@ import os,json
 
 DATA_DIR = f'{os.path.dirname(os.path.abspath(__file__))}\\data'   
 
-def get_stocks_list():
-    # tickers = gt.get_tickers_filtered(mktcap_min=150000, mktcap_max=10000000)
-    #tickers = gt.get_biggest_n_tickers(10, sectors=None)
-    tickers = gt.get_tickers()[:5]
-    return jsonify(tickers)
-
 def get_stockprofiles_sp500(usecache = 'True'):
 
     is_cache_file = os.path.isfile(f'{DATA_DIR}\\stockinfo_sp500.csv')
