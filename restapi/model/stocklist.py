@@ -3,7 +3,9 @@ from get_all_tickers import get_tickers as gt
 import requests
 from bs4 import BeautifulSoup
 import pandas as pd
-import json
+import os,json
+
+DATA_DIR = f'{os.path.dirname(os.path.abspath(__file__))}\\data'   
 
 def get_stocks_list():
     # tickers = gt.get_tickers_filtered(mktcap_min=150000, mktcap_max=10000000)
@@ -11,38 +13,66 @@ def get_stocks_list():
     tickers = gt.get_tickers()[:5]
     return jsonify(tickers)
 
-def get_stocks_sp500():
-    #resp = requests.get('http://en.wikipedia.org/wiki/List_of_S%26P_500_companies')
-    session = requests.Session()
-    session.verify = False
+def get_stockprofiles_sp500(usecache = 'True'):
 
-    headers = {'User-Agent': 'Mozilla/5.0 (X11; Linux i686) AppleWebKit/537.17 (KHTML, like Gecko) Chrome/24.0.1312.27 Safari/537.17'}
-    resp = session.get('http://en.wikipedia.org/wiki/List_of_S%26P_500_companies',headers=headers)
+    is_cache_file = os.path.isfile(f'{DATA_DIR}\\stockinfo_sp500.csv')
+    use_cache = eval(usecache)
+    if (not use_cache) or (use_cache and not is_cache_file):
+        #resp = requests.get('http://en.wikipedia.org/wiki/List_of_S%26P_500_companies')
+        session = requests.Session()
+        session.verify = False
 
-    soup = BeautifulSoup(resp.text, 'lxml')
-    table = soup.find('table', {'class': 'wikitable sortable'})
+        headers = {'User-Agent': 'Mozilla/5.0 (X11; Linux i686) AppleWebKit/537.17 (KHTML, like Gecko) Chrome/24.0.1312.27 Safari/537.17'}
+        resp = session.get('http://en.wikipedia.org/wiki/List_of_S%26P_500_companies',headers=headers)
 
-    tickers = []
-    for row in table.findAll('tr')[1:]:
-        cols = row.findAll('td')
-        ticker = cols[0].text
-        security = cols[1].text
-        sector = cols[3].text
-        subindustry = cols[4].text
-        registered = cols[6].text
-        founded = cols[8].text
-        #tickers.append(ticker.replace('\n',''))
-        tickers.append({
-            "ticker" : ticker.replace('\n',''),
-            "security" : security,
-            "sector" : sector,
-            "subindustry" : subindustry,
-            "registered" : registered,
-            "founded" : founded.replace('\n','')
-        })
+        soup = BeautifulSoup(resp.text, 'lxml')
+        table = soup.find('table', {'class': 'wikitable sortable'})
 
-    dfSp500Tickers = pd.json_normalize(tickers)
-    # dfSp500Tickers.to_csv(f'{DATA_DIR}\\sp500tickers.csv')
-    print(dfSp500Tickers.head(30))
-    return json.dumps(tickers)
+        tickers = []
+        for row in table.findAll('tr')[1:]:
+            cols = row.findAll('td')
+            ticker = cols[0].text
+            security = cols[1].text
+            sector = cols[3].text
+            subindustry = cols[4].text
+            registered = cols[6].text
+            founded = cols[8].text
+            #tickers.append(ticker.replace('\n',''))
+            tickers.append({
+                "ticker" : ticker.replace('\n',''),
+                "security" : security,
+                "sector" : sector,
+                "subindustry" : subindustry,
+                "registered" : registered,
+                "founded" : founded.replace('\n','')
+            })
 
+        dfSp500Tickers = pd.json_normalize(tickers)
+        dfSp500Tickers.to_csv(f'{DATA_DIR}\\stockinfo_sp500.csv',index=False)
+        # dfSp500Tickers.to_csv(f'{DATA_DIR}\\sp500tickers.csv')
+        print(dfSp500Tickers.head(30))
+        result = dfSp500Tickers.to_json(orient='table',index=False)
+        return json.dumps(json.loads(result)['data'])
+    else:
+        if is_cache_file:
+            # file exists, read it
+            dfSp500Tickers = pd.read_csv(f'{DATA_DIR}\\stockinfo_sp500.csv')
+            # dfSp500Tickers.to_csv(f'{DATA_DIR}\\sp500tickers.csv')
+            print(dfSp500Tickers.head(30))
+            result = dfSp500Tickers.to_json(orient='table',index=False)
+            return json.dumps(json.loads(result)['data'])
+    
+def get_stocklist_sp500():
+
+    is_cache_file = os.path.isfile(f'{DATA_DIR}\\stockinfo_sp500.csv')
+    if not is_cache_file:
+        dfallstocks = pd.read_json(get_stockprofiles_sp500(False))
+    else:
+        dfallstocks = pd.read_csv(f'{DATA_DIR}\\stockinfo_sp500.csv')
+    
+    # extract list of sector and subindustry
+    lst_sectors = dfallstocks[['sector','subindustry']]
+    
+    print(lst_sectors.head(30))
+    result = lst_sectors[['sector','subindustry']].to_json(orient='table',index=False)
+    return json.dumps(json.loads(result)['data'])
