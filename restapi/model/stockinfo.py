@@ -19,6 +19,8 @@ import nltk
 from nltk.corpus import stopwords
 
 import warnings
+
+from restapi.model.text_analysis_utils import custom_clean_text, remove_stems, stem_wordlist_porter
 warnings.filterwarnings("ignore")
 
 import os.path, sys
@@ -109,6 +111,7 @@ def get_green_score_v1(ticker):
         response = requests.get(d['link'],verify=False)
         article = g.extract(raw_html = response.text)
         article_clean = article.cleaned_text
+        article_clean = custom_clean_text(article_clean)
         stockInfoAggregated.Append(f'{article_clean} ')
     g.close()
 
@@ -192,9 +195,16 @@ def get_green_score_v2(ticker):
         response = requests.get(d['link'],verify=False)
         article = g.extract(raw_html = response.text)
         article_clean = article.cleaned_text
+        article_clean = custom_clean_text(article_clean)
         stockInfoAggregated.Append(f'{article_clean} ')
     g.close()
-    text_content = stockInfoAggregated.Text().replace('\n',' ')
+    text_content_pre = stockInfoAggregated.Text()
+
+    # creaate an array of words out of text content
+    intext_wordlist = text_content_pre.split(' ')
+    # run the stemmatization procedure (Poter algorithm)
+    outtext_wordlist = stem_wordlist_porter(intext_wordlist)
+    text_content = " ".join(outtext_wordlist)
 
     tf_idf_vec_smooth = TfidfVectorizer(use_idf=True,  
                                 smooth_idf=True,  
@@ -204,8 +214,9 @@ def get_green_score_v2(ticker):
     
     print("With Smoothing:")
     tf_idf_dataframe_smooth=pd.DataFrame(tf_idf_data_smooth.toarray(),columns=tf_idf_vec_smooth.get_feature_names())
-    print(tf_idf_dataframe_smooth)
-    result = json.loads(tf_idf_dataframe_smooth.to_json(orient='table',index=False))['data'][0]
+    tf_idf_dataframe = remove_stems(tf_idf_dataframe_smooth)
+    print(tf_idf_dataframe)
+    result = json.loads(tf_idf_dataframe.to_json(orient='table',index=False))['data'][0]
     result_sorted = sorted(result.items(), key=lambda x: x[1], reverse=True)
     return json.dumps(result_sorted)
 
