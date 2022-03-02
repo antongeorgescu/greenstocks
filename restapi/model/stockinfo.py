@@ -24,7 +24,7 @@ warnings.filterwarnings("ignore")
 import os.path, sys
 sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)), os.pardir))
 from utils import StringBuilder
-
+from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
 
 DATA_DIR = f'{os.path.dirname(os.path.abspath(__file__))}\\data'   
 
@@ -81,7 +81,7 @@ def get_stock_profile(ticker):
 
     return json.dumps(stock_profile)
 
-def get_aggregated_tokens(ticker):
+def get_green_score_v1(ticker):
     
     # session = requests.Session()
     
@@ -164,4 +164,49 @@ def get_aggregated_tokens(ticker):
     response.append(('Relevant Tokens',[t for t in freq_items if t[1] >= 5]))
     return json.dumps(response)
 
+def get_green_score_v2(ticker):
+    
+    # session = requests.Session()
+    
+    session = requests_cache.CachedSession('yfinance.cache')
+    session.verify = False
+    
+    stock = yfinance.Ticker(ticker,session)
 
+    stockInfoAggregated = StringBuilder()
+
+    # get stock info
+    stockInfo = stock.info
+    businessDescription = stockInfo['longBusinessSummary']
+    stockInfoAggregated.Append(f'{businessDescription} ')
+
+    # show news
+    dataStockNews = stock.news
+    # dataStockNews = json.loads(stock.news)
+    dfStockNews = pd.json_normalize(dataStockNews)
+    dfStockNews.to_csv(f'{DATA_DIR}\\stocknews_{ticker}.csv')
+
+    g = Goose()
+    for d in dataStockNews:
+        stockInfoAggregated.Append(f'{d["title"]} ')
+        response = requests.get(d['link'],verify=False)
+        article = g.extract(raw_html = response.text)
+        article_clean = article.cleaned_text
+        stockInfoAggregated.Append(f'{article_clean} ')
+    g.close()
+    text_content = stockInfoAggregated.Text().replace('\n',' ')
+
+    tf_idf_vec_smooth = TfidfVectorizer(use_idf=True,  
+                                smooth_idf=True,  
+                                ngram_range=(1,1),stop_words='english')
+        
+    tf_idf_data_smooth = tf_idf_vec_smooth.fit_transform([text_content])
+    
+    print("With Smoothing:")
+    tf_idf_dataframe_smooth=pd.DataFrame(tf_idf_data_smooth.toarray(),columns=tf_idf_vec_smooth.get_feature_names())
+    print(tf_idf_dataframe_smooth)
+    result = json.loads(tf_idf_dataframe_smooth.to_json(orient='table',index=False))['data'][0]
+    result_sorted = sorted(result.items(), key=lambda x: x[1], reverse=True)
+    return json.dumps(result_sorted)
+
+    

@@ -30,7 +30,8 @@ def home():
 app.add_url_rule('/api/v1/resources/stocks/sp500/profile/<usecache>', view_func=model.get_stockprofiles_sp500)
 app.add_url_rule('/api/v1/resources/stocks/sp500/list', view_func=model.get_stocklist_sp500)
 app.add_url_rule('/api/v1/resources/stocks/news/<ticker>', view_func=model.get_stock_news)
-app.add_url_rule('/api/v1/resources/stocks/greenscore/<ticker>', view_func=model.get_aggregated_tokens)
+app.add_url_rule('/api/v1/resources/stocks/greenscore/v1/<ticker>', view_func=model.get_green_score_v1)
+app.add_url_rule('/api/v1/resources/stocks/greenscore/v2/<ticker>', view_func=model.get_green_score_v2)
 app.add_url_rule('/api/v1/resources/stocks/profile/<ticker>', view_func=model.get_stock_profile)
 
 if __name__ == "__main__":
