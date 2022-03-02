@@ -1,1 +1,2 @@
-compani,share,quarter,non,million,use,forward,end,ga,loss,gaap,thi,rng,fourth,
+compani,share,quarter,non,million,use,forward,end,ga,loss,gaap,thi,rng,fourth,fuel,
+2021,incom,oper,cng,amazon,year,
