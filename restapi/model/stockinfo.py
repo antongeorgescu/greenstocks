@@ -19,6 +19,7 @@ import nltk
 from nltk.corpus import stopwords
 
 import warnings
+from restapi.model import text_analysis_utils
 
 from restapi.model.text_analysis_utils import custom_clean_text, remove_stems, stem_wordlist_porter
 warnings.filterwarnings("ignore")
@@ -176,12 +177,12 @@ def get_green_score_v2(ticker):
     
     stock = yfinance.Ticker(ticker,session)
 
-    stockInfoAggregated = StringBuilder()
+    stockInfoDocs = []
 
     # get stock info
     stockInfo = stock.info
     businessDescription = stockInfo['longBusinessSummary']
-    stockInfoAggregated.Append(f'{businessDescription} ')
+    stockInfoDocs.append(f'{businessDescription} ')
 
     # show news
     dataStockNews = stock.news
@@ -191,33 +192,40 @@ def get_green_score_v2(ticker):
 
     g = Goose()
     for d in dataStockNews:
-        stockInfoAggregated.Append(f'{d["title"]} ')
+        stockInfoDocs.append(f'{d["title"]} ')
         response = requests.get(d['link'],verify=False)
         article = g.extract(raw_html = response.text)
         article_clean = article.cleaned_text
         article_clean = custom_clean_text(article_clean)
-        stockInfoAggregated.Append(f'{article_clean} ')
+        stockInfoDocs.append(f'{article_clean} ')
     g.close()
-    text_content_pre = stockInfoAggregated.Text()
+    
+    stockInfoDocsStemmed = []
+    # run word stemmatization algorithms
+    for doc in stockInfoDocs:
+        intext_wordlist = doc.split(' ')
+        # run the stemmatization procedure (Poter algorithm)
+        outtext_wordlist = stem_wordlist_porter(intext_wordlist)
+        doc = " ".join(outtext_wordlist)
+        stockInfoDocsStemmed.append(doc)
 
-    # creaate an array of words out of text content
-    intext_wordlist = text_content_pre.split(' ')
-    # run the stemmatization procedure (Poter algorithm)
-    outtext_wordlist = stem_wordlist_porter(intext_wordlist)
-    text_content = " ".join(outtext_wordlist)
-
+    # calculate Tf-Idf with smooting
     tf_idf_vec_smooth = TfidfVectorizer(use_idf=True,  
                                 smooth_idf=True,  
                                 ngram_range=(1,1),stop_words='english')
         
-    tf_idf_data_smooth = tf_idf_vec_smooth.fit_transform([text_content])
+    tf_idf_data_smooth = tf_idf_vec_smooth.fit_transform(stockInfoDocsStemmed)
     
-    print("With Smoothing:")
+    print("Calculate Tf-Idf with smoothing:")
     tf_idf_dataframe_smooth=pd.DataFrame(tf_idf_data_smooth.toarray(),columns=tf_idf_vec_smooth.get_feature_names())
     tf_idf_dataframe = remove_stems(tf_idf_dataframe_smooth)
     print(tf_idf_dataframe)
+
     result = json.loads(tf_idf_dataframe.to_json(orient='table',index=False))['data'][0]
     result_sorted = sorted(result.items(), key=lambda x: x[1], reverse=True)
-    return json.dumps(result_sorted)
+
+    green_score,green_words = text_analysis_utils.calculate_green_score_v2(result_sorted)
+
+    return json.dumps((green_score,green_words))
 
     
