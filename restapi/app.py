@@ -33,6 +33,7 @@ app.add_url_rule('/api/v1/resources/stocks/news/<ticker>', view_func=model.get_s
 app.add_url_rule('/api/v1/resources/stocks/greenscore/v1/<ticker>', view_func=model.get_green_score_v1)
 app.add_url_rule('/api/v1/resources/stocks/greenscore/v2/<ticker>', view_func=model.get_green_score_v2)
 app.add_url_rule('/api/v1/resources/stocks/profile/<ticker>', view_func=model.get_stock_profile)
+app.add_url_rule('/api/v1/resources/stocks/sector/<sector>', view_func=model.get_stocks_by_sector)
 
 if __name__ == "__main__":
     app.run(host='127.0.0.1', port =5099,debug=True)

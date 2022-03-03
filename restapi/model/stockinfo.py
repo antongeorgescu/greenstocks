@@ -218,6 +218,8 @@ def get_green_score_v2(ticker):
     
     print("Calculate Tf-Idf with smoothing:")
     tf_idf_dataframe_smooth=pd.DataFrame(tf_idf_data_smooth.toarray(),columns=tf_idf_vec_smooth.get_feature_names())
+    all_words = json.loads(tf_idf_dataframe_smooth.to_json(orient='table',index=False))['data'][0]
+
     tf_idf_dataframe = remove_stems(tf_idf_dataframe_smooth)
     print(tf_idf_dataframe)
 
@@ -226,6 +228,6 @@ def get_green_score_v2(ticker):
 
     green_score,green_words = text_analysis_utils.calculate_green_score_v2(result_sorted)
 
-    return json.dumps((green_score,green_words))
+    return json.dumps((("green_score",green_score),("green_words",green_words),("all_words",all_words)))
 
     
