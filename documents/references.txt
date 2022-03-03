@@ -1,0 +1,9 @@
+https://medium.com/analytics-vidhya/tf-idf-term-frequency-technique-easiest-explanation-for-text-classification-in-nlp-with-code-8ca3912e58c3
+https://www.mygreatlearning.com/blog/bag-of-words/
+https://www.datacamp.com/community/tutorials/stemming-lemmatization-python
+https://opensource.com/article/20/8/intro-python-nltk
+https://towardsai.net/p/data-mining/text-mining-in-python-steps-and-examples-78b3f8fd913b
+https://github.com/dipanjanS/text-analytics-with-python/blob/master/New-Second-Edition/Ch07%20-%20Text%20Similarity%20and%20Clustering/Ch07a%20-%20Analyzing%20Term%20Similarity.ipynb
+https://www.capitalone.com/tech/machine-learning/understanding-tf-idf/
+https://monkeylearn.com/blog/what-is-tf-idf/
+
