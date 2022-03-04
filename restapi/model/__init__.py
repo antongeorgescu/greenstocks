@@ -15,3 +15,4 @@ from .stockinfo import get_stock_history
 from .stocklist import get_stockprofiles_sp500
 from .stocklist import get_stocklist_sp500
 from .stocklist import get_stocks_by_sector
+from .stocklist import get_stocks_sector_list

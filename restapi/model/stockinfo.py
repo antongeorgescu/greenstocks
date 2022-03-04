@@ -296,6 +296,6 @@ def get_stock_green_saved_scores():
     # read green score file
     dfgscores = pd.read_csv(f'{DATA_DIR}\green_stock_scores.csv')    
     result = dfgscores.to_json(orient='table',index=False)
-    return json.dumps(json.loads(result))
+    return json.dumps(json.loads(result)["data"])
 
     

@@ -88,3 +88,17 @@ def get_stocks_by_sector(sector):
     print(lst_stocks.head(30))
     result = lst_stocks.to_json(orient='table',index=False)
     return json.dumps(json.loads(result)['data'])
+
+def get_stocks_sector_list():
+    is_cache_file = os.path.isfile(f'{DATA_DIR}\\stockinfo_sp500.csv')
+    if not is_cache_file:
+        dfallstocks = pd.read_json(get_stockprofiles_sp500(False))
+    else:
+        dfallstocks = pd.read_csv(f'{DATA_DIR}\\stockinfo_sp500.csv')
+    
+    # extract list of stocks per sector
+    dfsectorlist = dfallstocks[["sector"]]
+    dfsectorlist.drop_duplicates(inplace=True,ignore_index=True)
+    
+    result = dfsectorlist.to_json(orient='table',index=False)
+    return json.dumps(json.loads(result)['data'])

@@ -1,0 +1,1 @@
+[{"sector": "Industrials"}, {"sector": "Health Care"}, {"sector": "Information Technology"}, {"sector": "Communication Services"}, {"sector": "Consumer Staples"}, {"sector": "Consumer Discretionary"}, {"sector": "Utilities"}, {"sector": "Financials"}, {"sector": "Materials"}, {"sector": "Real Estate"}, {"sector": "Energy"}, {"sector": "Communication Services\n"}]
