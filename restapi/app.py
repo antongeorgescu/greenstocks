@@ -1,3 +1,4 @@
+from crypt import methods
 import ssl
 
 try:
@@ -32,6 +33,8 @@ app.add_url_rule('/api/v1/resources/stocks/sp500/list', view_func=model.get_stoc
 app.add_url_rule('/api/v1/resources/stocks/news/<ticker>', view_func=model.get_stock_news)
 app.add_url_rule('/api/v1/resources/stocks/greenscore/v1/<ticker>', view_func=model.get_green_score_v1)
 app.add_url_rule('/api/v1/resources/stocks/greenscore/v2/<ticker>', view_func=model.get_green_score_v2)
+app.add_url_rule('/api/v1/resources/stocks/greenscore/save', view_func=model.save_stock_green_score,methods=['PUT'])
+app.add_url_rule('/api/v1/resources/stocks/greenscore/saved/list', view_func=model.get_stock_green_saved_scores)
 app.add_url_rule('/api/v1/resources/stocks/financials/<ticker>', view_func=model.get_stock_financials)
 app.add_url_rule('/api/v1/resources/stocks/recommendations/<ticker>', view_func=model.get_stock_recommendations)
 app.add_url_rule('/api/v1/resources/stocks/history/<ticker>/<period>', view_func=model.get_stock_history)

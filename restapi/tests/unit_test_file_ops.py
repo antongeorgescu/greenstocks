@@ -69,12 +69,35 @@ class TestFileOps(unittest.TestCase):
         with open(filepath, 'wb') as dec_file:
             dec_file.write(decrypted)
     
-        
-        
+    def update_greenscores_file(self):
+        dfgscores = pd.read_csv(f'{self.DATA_DIR}\green_stock_scores.csv')    
+        print(dfgscores)
+
+        # find ticker
+        ticker = 'CLNE'
+        score_version = 'v2'
+        score_value = '0.034'
+        dfselected = dfgscores[dfgscores['ticker'] == ticker]
+        if dfselected.empty:
+            if score_version == 'v1':
+                gscore_v1 = score_value
+                gscore_v2 = '_'
+            elif score_version == 'v2':
+                gscore_v1 = '_'
+                gscore_v2 = score_value
+            dfgscores = dfselected.append({'ticker':ticker,'green_score_v1':gscore_v1,'green_score_v2':gscore_v2},ignore_index=True)   
+        else:
+            # get row index for ticker
+            index = dfgscores.index
+            condition = dfgscores["ticker"] == ticker
+            ticker_rowindex = int(index[condition].tolist()[0])
+            if score_version == 'v1':
+                dfgscores.at[ticker_rowindex,'green_score_v1'] = score_value
+            elif score_version == 'v2':
+                dfgscores.at[ticker_rowindex,'green_score_v2'] = score_value
+        dfgscores.to_csv(f'{self.DATA_DIR}\green_stock_scores.csv',index=False)
+
+
 if __name__ == '__main__':
-    # unittest.main(TestStockInfoStats().test_load_stock_data())
-    # unittest.main(TestStockInfoStats().test_scrape_weather())
-    # unittest.main(TestStockInfoStats().test_scrape_stock_news())
-    # unittest.main(TestStockInfoStats().test_entity_analysis())
-    unittest.main(TestStockInfoStats().test_list_sp500_stocks())
+    unittest.main(TestFileOps().update_greenscores_file())
 

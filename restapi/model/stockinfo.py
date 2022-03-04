@@ -13,6 +13,7 @@ import pandas as pd
 from spacy.lang.en import English
 import pickle
 import urllib.request
+from flask import request
 
 from goose3 import Goose
 import nltk
@@ -191,7 +192,8 @@ def get_green_score_v1(ticker):
     print('Total Tokens:',len(freq.items()),' G-Tokens:',green_tokens,' Green Focus:',green_focus,' Green Density:',green_density)
     response = []
     response.append(('Total Tokens',len(freq.items())))
-    response.append(('G-Tokens',green_tokens))
+    response.append(('Green Tokens',green_tokens))
+    response.append(('Green Score',round(float(green_tokens/len(freq.items())),3)))
     response.append(('Green Focus',green_focus))
     response.append(('Green Density',green_density))
     response.append(('Relevant Tokens',[t for t in freq_items if t[1] >= 5]))
@@ -258,5 +260,42 @@ def get_green_score_v2(ticker):
     green_score,green_words = text_analysis_utils.calculate_green_score_v2(result_sorted)
 
     return json.dumps((("green_score",green_score),("green_words",green_words),("all_words",all_words)))
+
+def save_stock_green_score():
+    ticker = request.json["ticker"]
+    score_version = request.json["version"]
+    score_value = request.json["score"]
+    
+    # read green score file
+    dfgscores = pd.read_csv(f'{DATA_DIR}\green_stock_scores.csv')    
+    print(dfgscores)
+
+    # find ticker
+    dfselected = dfgscores[dfgscores['ticker'] == ticker]
+    if dfselected.empty:
+        if score_version == 'v1':
+            gscore_v1 = score_value
+            gscore_v2 = '_'
+        elif score_version == 'v2':
+            gscore_v1 = '_'
+            gscore_v2 = score_value
+        dfgscores = dfselected.append({'ticker':ticker,'green_score_v1':gscore_v1,'green_score_v2':gscore_v2},ignore_index=True)   
+    else:
+        # get row index for ticker
+        index = dfgscores.index
+        condition = dfgscores["ticker"] == ticker
+        ticker_rowindex = int(index[condition].tolist()[0])
+        if score_version == 'v1':
+            dfgscores.at[ticker_rowindex,'green_score_v1'] = score_value
+        elif score_version == 'v2':
+            dfgscores.at[ticker_rowindex,'green_score_v2'] = score_value
+    dfgscores.to_csv(f'{DATA_DIR}\green_stock_scores.csv',index=False)
+    return 200
+
+def get_stock_green_saved_scores():
+    # read green score file
+    dfgscores = pd.read_csv(f'{DATA_DIR}\green_stock_scores.csv')    
+    result = dfgscores.to_json(orient='table',index=False)
+    return json.dumps(json.loads(result))
 
     

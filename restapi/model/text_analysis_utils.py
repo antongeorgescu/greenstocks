@@ -52,18 +52,24 @@ def calculate_green_score_v2(dictword):
         for w in l.split(','):
             word_list.append(w)
     
+    # check if sum of word distribution is 1.0
+    sum_word = 0.0
+    for t in dictword:
+        sum_word += float(t[1])
+    print(sum_word)
+
     # remove from dataframe all columns that are not in word_list
-    dict_word = []
+    green_dict = []
     for t in dictword:
         if t[0] in word_list:
-            dict_word.append(t)
+            green_dict.append(t)
     
-    print(dict_word)
+    print(green_dict)
 
     # calculate green_score
     agg_score = 0.0
-    for w in dict_word:
+    for w in green_dict:
         agg_score += float(w[1])
-    green_score = round(float(agg_score / len(dict_word)),3)
-
-    return green_score,dict_word
+    green_score = round(float(agg_score / sum_word),3)
+    
+    return green_score,green_dict
