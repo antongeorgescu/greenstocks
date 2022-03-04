@@ -57,7 +57,7 @@ def get_stock_news(ticker):
     print(stockNews)
     return json.dumps(stockNews)
     
-def get_stock_profile(ticker):
+def get_stock_financials(ticker):
     
     # session = requests.Session()
     
@@ -69,20 +69,49 @@ def get_stock_profile(ticker):
     stock_profile = []
 
     # show financials
-    stock_profile.append(('stock_financials',stock.financials))
-    stock_profile.append(('stock_quarterly_financials',stock.quarterly_financials))
-    stock_profile.append(('stock_major_holders',stock.major_holders))
-    stock_profile.append(('stock_institutional_holders',stock.institutional_holders))
-    stock_profile.append(('stock_balance_sheet',stock.balance_sheet))
-    stock_profile.append(('stock_quarterly_balance_sheet',stock.quarterly_balance_sheet))
-    stock_profile.append(('stock_cashflow',stock.cashflow))
-    stock_profile.append(('stock_quarterly_cashflow',stock.quarterly_cashflow))
-    stock_profile.append(('stock_earnings',stock.earnings))
-    stock_profile.append(('stock_quarterly_earnings',stock.quarterly_earnings))
-    stock_profile.append(('stock_sustainability',stock.sustainability))
-    stock_profile.append(('stock_recommendations',stock.recommendations))
+    stock_profile.append(('stock_financials',json.loads(stock.financials.to_json(orient="table",index=False))['data']))
+    stock_profile.append(('stock_quarterly_financials',json.loads(stock.quarterly_financials.to_json(orient="table",index=False))['data']))
+    stock_profile.append(('stock_balance_sheet',json.loads(stock.balance_sheet.to_json(orient="table",index=False))['data']))
+    stock_profile.append(('stock_quarterly_balance_sheet',json.loads(stock.quarterly_balance_sheet.to_json(orient="table",index=False))['data']))
+    stock_profile.append(('stock_cashflow',json.loads(stock.cashflow.to_json(orient="table",index=False))['data']))
+    stock_profile.append(('stock_quarterly_cashflow',json.loads(stock.quarterly_cashflow.to_json(orient="table",index=False))['data']))
+    stock_profile.append(('stock_earnings',json.loads(stock.earnings.to_json(orient="table",index=False))['data']))
+    stock_profile.append(('stock_quarterly_earnings',json.loads(stock.quarterly_earnings.to_json(orient="table",index=False))['data']))
+    
+    return json.dumps(stock_profile)
+
+def get_stock_recommendations(ticker):
+    
+    # session = requests.Session()
+    
+    session = requests_cache.CachedSession('yfinance.cache')
+    session.verify = False
+    
+    stock = yfinance.Ticker(ticker,session)
+
+    stock_profile = []
+
+    # show financials
+    stock_profile.append(('stock_major_holders',json.loads(stock.major_holders.to_json(orient="table",index=False))['data']))
+    stock_profile.append(('stock_institutional_holders',json.loads(stock.institutional_holders.to_json(orient="table",index=False))['data']))
+    stock_profile.append(('stock_recommendations',json.loads(stock.recommendations.to_json(orient="table",index=False))['data']))
 
     return json.dumps(stock_profile)
+
+def get_stock_history(ticker,period):
+    
+    if period not in ['5d','1mo','3mo','6mo','1y','2y','ytd']:
+        return 'Specified period parameter is incorrect.Valid values are:5d,1mo,3mo,6mo,1y,2y,ytd',400
+
+    session = requests_cache.CachedSession('yfinance.cache')
+    session.verify = False
+    
+    stock = yfinance.Ticker(ticker,session)
+
+    stock_history = stock.history(period=period,actions=False)
+    # stock_history = stock.history(start='2021-01-22', end='2021-01-31', actions=False)
+
+    return json.dumps(json.loads(stock_history.to_json(orient="table"))['data'])
 
 def get_green_score_v1(ticker):
     

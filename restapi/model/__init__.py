@@ -7,7 +7,9 @@ from .text_analysis_utils import calculate_green_score_v2
 from .stockinfo import get_stock_news
 from .stockinfo import get_green_score_v1
 from .stockinfo import get_green_score_v2
-from .stockinfo import get_stock_profile
+from .stockinfo import get_stock_financials
+from .stockinfo import get_stock_recommendations
+from .stockinfo import get_stock_history
 from .stocklist import get_stockprofiles_sp500
 from .stocklist import get_stocklist_sp500
 from .stocklist import get_stocks_by_sector
