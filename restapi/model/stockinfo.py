@@ -20,9 +20,9 @@ import nltk
 from nltk.corpus import stopwords
 
 import warnings
-from restapi.model import text_analysis_utils
+# from ..model import text_analysis_utils
 
-from restapi.model.text_analysis_utils import custom_clean_text, remove_stems, stem_wordlist_porter
+from .text_analysis_utils import custom_clean_text, remove_stems, stem_wordlist_porter
 warnings.filterwarnings("ignore")
 
 import os.path, sys
