@@ -1,5 +1,0 @@
-{
-  "load_extensions": {
-    "azureml_widgets/extension": true
-  }
-}
