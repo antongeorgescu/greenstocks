@@ -10,7 +10,7 @@ DATA_DIR = f'{os.path.dirname(os.path.abspath(__file__))}\\data'
 def get_stockprofiles_sp500(usecache = 'True'):
 
     is_cache_file = os.path.isfile(f'{DATA_DIR}\\stockinfo_sp500.csv')
-    use_cache = eval(usecache)
+    use_cache = eval(usecache.capitalize())
     if (not use_cache) or (use_cache and not is_cache_file):
         #resp = requests.get('http://en.wikipedia.org/wiki/List_of_S%26P_500_companies')
         session = requests.Session()
