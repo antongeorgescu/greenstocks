@@ -16,6 +16,10 @@ const routes: Routes = [
   {
     path: "industry-list",
     component: IndustryListComponent
+  },
+  {
+    path: "sub-industry/:id",
+    component : IndustryListComponent
   }
 ];
 

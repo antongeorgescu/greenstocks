@@ -9,16 +9,4 @@ import { GreenStockService } from './services/greenstock.service';
 })
 export class AppComponent {
   title = 'dashboard';
-
-  constructor(private greenStockService:GreenStockService)
-  {
-
-  }
-
-  ngOnInit()
-  {
-    // this.greenStockService.getStocks().subscribe(data =>{
-    //   console.log(data);
-    // })
-  }
 }

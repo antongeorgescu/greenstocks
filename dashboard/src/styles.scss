@@ -20,3 +20,14 @@
 @import "../node_modules/bootstrap/scss/tables";
 @import "../node_modules/bootstrap/scss/transitions";
 @import "../node_modules/bootstrap/scss/list-group";
+
+
+
+.list-group-item.active {
+    background-color: green;
+}
+
+button {
+    background-color: green;
+    color: white;
+}
