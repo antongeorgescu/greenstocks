@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { DashboardComponent } from './dashboard.component';
 import { IndustryListComponent } from './greenstock/industry-list.component';
+import { StockComponent } from './greenstock/stock.component';
 
 const routes: Routes = [
   {
@@ -20,6 +21,10 @@ const routes: Routes = [
   {
     path: "sub-industry/:id",
     component : IndustryListComponent
+  },
+  {
+    path: "stocks/:id",
+    component : StockComponent
   }
 ];
 

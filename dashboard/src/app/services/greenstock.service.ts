@@ -13,4 +13,20 @@ export class GreenStockService{
     getSubIndustry(id:any){
         return this.http.get(this.configService.config.API + "api/v1/resources/stocks/sector/"+ id);
     }
+
+    getStocksFinancials(ticker:any){
+        return this.http.get(this.configService.config.API + "api/v1/resources/stocks/financials/"+ticker);
+    }
+
+    getStocksRecommendations(ticker:any){
+        return this.http.get(this.configService.config.API + "api/v1/resources/stocks/recommendations/"+ticker);
+    }
+
+    getStocksScoreV1(ticker:any){
+        return this.http.get(this.configService.config.API + "api/v1/resources/stocks/greenscore/v1/"+ticker);
+    }
+
+    getStocksScoreV2(ticker:any){
+        return this.http.get(this.configService.config.API + "api/v1/resources/stocks/greenscore/v2/"+ticker);
+    }
 }

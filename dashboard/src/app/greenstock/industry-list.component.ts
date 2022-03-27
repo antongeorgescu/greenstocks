@@ -1,4 +1,5 @@
 import { Component } from "@angular/core";
+import { tick } from "@angular/core/testing";
 import { ActivatedRoute, Router } from "@angular/router";
 import { GreenStockService } from "../services/greenstock.service";
 
@@ -40,5 +41,10 @@ export class IndustryListComponent{
     onClick(id:any)
     {
         this.router.navigate(["sub-industry/"+id]);
+    }
+
+    onSubIndustryClick(ticker:string)
+    {
+        this.router.navigate(["stocks/"+ticker]);
     }
 } 

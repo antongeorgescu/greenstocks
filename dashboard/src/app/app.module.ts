@@ -7,6 +7,7 @@ import { GreenStockService } from './services/greenstock.service';
 import { IndustryListComponent } from './greenstock/industry-list.component';
 import { DashboardComponent } from './dashboard.component';
 import { ConfigService } from './config.service';
+import { StockComponent } from './greenstock/stock.component';
 
 export function init_app(configService: ConfigService) {
   return () => configService.load();
@@ -14,7 +15,7 @@ export function init_app(configService: ConfigService) {
 
 @NgModule({
   declarations: [
-    AppComponent, IndustryListComponent, DashboardComponent
+    AppComponent, IndustryListComponent, DashboardComponent,StockComponent
   ],
   imports: [
     BrowserModule,
