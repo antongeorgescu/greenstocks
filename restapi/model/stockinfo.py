@@ -14,15 +14,14 @@ from spacy.lang.en import English
 import pickle
 import urllib.request
 from flask import request
+from nltk.stem import PorterStemmer
+from nltk.stem import LancasterStemmer
 
 from goose3 import Goose
 import nltk
 from nltk.corpus import stopwords
 
 import warnings
-# from ..model import text_analysis_utils
-
-from .text_analysis_utils import custom_clean_text, remove_stems, stem_wordlist_porter
 warnings.filterwarnings("ignore")
 
 import os.path, sys
@@ -257,7 +256,7 @@ def get_green_score_v2(ticker):
     result = json.loads(tf_idf_dataframe.to_json(orient='table',index=False))['data'][0]
     result_sorted = sorted(result.items(), key=lambda x: x[1], reverse=True)
 
-    green_score,green_words = text_analysis_utils.calculate_green_score_v2(result_sorted)
+    green_score,green_words = calculate_green_score_v2(result_sorted)
 
     return json.dumps((("green_score",green_score),("green_words",green_words),("all_words",all_words)))
 
@@ -298,4 +297,72 @@ def get_stock_green_saved_scores():
     result = dfgscores.to_json(orient='table',index=False)
     return json.dumps(json.loads(result)["data"])
 
+def custom_clean_text(text):
+    replace_to_none = ['.','"',"\n",'(',')',',',"'",';','’','\\']
+    replace_to_blank = ['--','-',"\n\n"]
+    for t in replace_to_blank:
+        text = text.replace(t,' ')
+    for t in replace_to_none:
+        text = text.replace(t,'')
+    return text
+
+def stem_wordlist_porter(word_list):
+    stemmed_wordlist = []
+    #create an object of class PorterStemmer
+    porter = PorterStemmer()
+    for word in word_list:
+        stemmed_wordlist.append("{0:20}".format(porter.stem(word)))
+    return stemmed_wordlist
+
+def stem_wordlist_lancaster(word_list):
+    stemmed_wordlist = []
+    #create an object of class LancasterStemmer
+    lancaster=LancasterStemmer()
+    for word in word_list:
+        stemmed_wordlist.append("{0:20}".format(lancaster.stem(word)))
+    return stemmed_wordlist
+
+def remove_stems(dftext):
+    ftext = open(f'{DATA_DIR}/stems_out.txt', 'r')
+    lines = ftext.readlines()
+    for l in lines:
+        for s in l.split(','):
+            if s in dftext.columns:
+                dftext.drop(s,axis = 1,inplace=True)
+    return dftext
+
+def update_stems_out(wordlistdash):
+    ftext = open(f'{DATA_DIR}/stems_out.txt', 'a')
+    ftext.write(wordlistdash.replace('-',','))
+    ftext.close()
+
+def calculate_green_score_v2(dictword):
+    ftext = open(f'{DATA_DIR}/green_vocabulary.txt', 'r')
+    lines = ftext.readlines()
+    word_list = []
+    for l in lines:
+        for w in l.split(','):
+            word_list.append(w)
     
+    # check if sum of word distribution is 1.0
+    sum_word = 0.0
+    for t in dictword:
+        sum_word += float(t[1])
+    print(sum_word)
+
+    # remove from dataframe all columns that are not in word_list
+    green_dict = []
+    for t in dictword:
+        if t[0] in word_list:
+            green_dict.append(t)
+    
+    print(green_dict)
+
+    # calculate green_score
+    agg_score = 0.0
+    for w in green_dict:
+        agg_score += float(w[1])
+    green_score = round(float(agg_score / sum_word),3)
+    
+    return green_score,green_dict
+   
