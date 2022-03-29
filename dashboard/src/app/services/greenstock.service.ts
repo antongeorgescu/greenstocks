@@ -22,11 +22,15 @@ export class GreenStockService{
         return this.http.get(this.configService.config.API + "api/v1/resources/stocks/recommendations/"+ticker);
     }
 
-    getStocksScoreV1(ticker:any){
+    getStocksReferences(ticker:any){
         return this.http.get(this.configService.config.API + "api/v1/resources/stocks/greenscore/v1/"+ticker);
     }
 
     getStocksScoreV2(ticker:any){
         return this.http.get(this.configService.config.API + "api/v1/resources/stocks/greenscore/v2/"+ticker);
+    }
+
+    getStocksArticles(ticker:any){
+        return this.http.get(this.configService.config.API + "api/v1/resources/stocks/news/"+ticker);
     }
 }

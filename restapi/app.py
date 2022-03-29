@@ -12,7 +12,7 @@ import os
 
 from flask import Flask, jsonify, session
 from flask_session import Session
-
+from flask_cors import CORS, cross_origin
 import datetime as dt
 
 # import declared  
@@ -20,7 +20,7 @@ import tests
 import model
 
 app = Flask(__name__)
-
+CORS(app)
 @app.route('/')
 @app.route('/index')
 def home():
