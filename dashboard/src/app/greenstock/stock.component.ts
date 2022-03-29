@@ -69,9 +69,9 @@ export class StockComponent{
             this.domReady(className);
         });
 
-        // this.greenStockService.getStocksReferences(this.stockName).subscribe(data =>{
-        //     console.log(data);
-        // });
+        this.greenStockService.getStocksReferences(this.stockName).subscribe((data:any) =>{
+            this.stockReferences = data[0][1];
+        });
 
         this.greenStockService.getStocksArticles(this.stockName).subscribe((data:any) =>{
             this.stockArticles = data.length;
