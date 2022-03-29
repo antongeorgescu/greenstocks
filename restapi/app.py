@@ -12,9 +12,7 @@ import os
 
 from flask import Flask, jsonify, session
 from flask_session import Session
-from flask_core import CORS
-
-#from flask_cors import CORS
+from flask_cors import CORS
 
 import datetime as dt
 
