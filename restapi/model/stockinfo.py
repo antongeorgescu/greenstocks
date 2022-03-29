@@ -19,6 +19,7 @@ from nltk.stem import LancasterStemmer
 
 from goose3 import Goose
 import nltk
+nltk.download("stopwords")
 from nltk.corpus import stopwords
 
 import warnings
