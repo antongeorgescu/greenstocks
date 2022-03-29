@@ -200,70 +200,73 @@ def get_green_score_v1(ticker):
         response.append(('Relevant Tokens',[t for t in freq_items if t[1] >= 5]))
         return json.dumps(response)
     except:
-        e = sys.exc_info()[1]
+        e = sys.exc_info()[0]
         return json.dumps(f'Error: {e}'),500
 
 def get_green_score_v2(ticker):
     
     # session = requests.Session()
-    
-    session = requests_cache.CachedSession('yfinance.cache')
-    session.verify = False
-    
-    stock = yfinance.Ticker(ticker,session)
-
-    stockInfoDocs = []
-
-    # get stock info
-    stockInfo = stock.info
-    businessDescription = stockInfo['longBusinessSummary']
-    stockInfoDocs.append(f'{businessDescription} ')
-
-    # show news
-    dataStockNews = stock.news
-    # dataStockNews = json.loads(stock.news)
-    dfStockNews = pd.json_normalize(dataStockNews)
-    dfStockNews.to_csv(f'{DATA_DIR}\\stocknews_{ticker}.csv')
-
-    g = Goose()
-    for d in dataStockNews:
-        stockInfoDocs.append(f'{d["title"]} ')
-        response = requests.get(d['link'],verify=False)
-        article = g.extract(raw_html = response.text)
-        article_clean = article.cleaned_text
-        article_clean = custom_clean_text(article_clean)
-        stockInfoDocs.append(f'{article_clean} ')
-    g.close()
-    
-    stockInfoDocsStemmed = []
-    # run word stemmatization algorithms
-    for doc in stockInfoDocs:
-        intext_wordlist = doc.split(' ')
-        # run the stemmatization procedure (Poter algorithm)
-        outtext_wordlist = stem_wordlist_porter(intext_wordlist)
-        doc = " ".join(outtext_wordlist)
-        stockInfoDocsStemmed.append(doc)
-
-    # calculate Tf-Idf with smooting
-    tf_idf_vec_smooth = TfidfVectorizer(use_idf=True,  
-                                smooth_idf=True,  
-                                ngram_range=(1,1),stop_words='english')
+    try:
+        session = requests_cache.CachedSession('yfinance.cache')
+        session.verify = False
         
-    tf_idf_data_smooth = tf_idf_vec_smooth.fit_transform(stockInfoDocsStemmed)
-    
-    print("Calculate Tf-Idf with smoothing:")
-    tf_idf_dataframe_smooth=pd.DataFrame(tf_idf_data_smooth.toarray(),columns=tf_idf_vec_smooth.get_feature_names())
-    all_words = json.loads(tf_idf_dataframe_smooth.to_json(orient='table',index=False))['data'][0]
+        stock = yfinance.Ticker(ticker,session)
 
-    tf_idf_dataframe = remove_stems(tf_idf_dataframe_smooth)
-    print(tf_idf_dataframe)
+        stockInfoDocs = []
 
-    result = json.loads(tf_idf_dataframe.to_json(orient='table',index=False))['data'][0]
-    result_sorted = sorted(result.items(), key=lambda x: x[1], reverse=True)
+        # get stock info
+        stockInfo = stock.info
+        businessDescription = stockInfo['longBusinessSummary']
+        stockInfoDocs.append(f'{businessDescription} ')
 
-    green_score,green_words = calculate_green_score_v2(result_sorted)
+        # show news
+        dataStockNews = stock.news
+        # dataStockNews = json.loads(stock.news)
+        dfStockNews = pd.json_normalize(dataStockNews)
+        dfStockNews.to_csv(f'{DATA_DIR}\\stocknews_{ticker}.csv')
 
-    return json.dumps((("green_score",green_score),("green_words",green_words),("all_words",all_words)))
+        g = Goose()
+        for d in dataStockNews:
+            stockInfoDocs.append(f'{d["title"]} ')
+            response = requests.get(d['link'],verify=False)
+            article = g.extract(raw_html = response.text)
+            article_clean = article.cleaned_text
+            article_clean = custom_clean_text(article_clean)
+            stockInfoDocs.append(f'{article_clean} ')
+        g.close()
+        
+        stockInfoDocsStemmed = []
+        # run word stemmatization algorithms
+        for doc in stockInfoDocs:
+            intext_wordlist = doc.split(' ')
+            # run the stemmatization procedure (Poter algorithm)
+            outtext_wordlist = stem_wordlist_porter(intext_wordlist)
+            doc = " ".join(outtext_wordlist)
+            stockInfoDocsStemmed.append(doc)
+
+        # calculate Tf-Idf with smooting
+        tf_idf_vec_smooth = TfidfVectorizer(use_idf=True,  
+                                    smooth_idf=True,  
+                                    ngram_range=(1,1),stop_words='english')
+            
+        tf_idf_data_smooth = tf_idf_vec_smooth.fit_transform(stockInfoDocsStemmed)
+        
+        print("Calculate Tf-Idf with smoothing:")
+        tf_idf_dataframe_smooth=pd.DataFrame(tf_idf_data_smooth.toarray(),columns=tf_idf_vec_smooth.get_feature_names())
+        all_words = json.loads(tf_idf_dataframe_smooth.to_json(orient='table',index=False))['data'][0]
+
+        tf_idf_dataframe = remove_stems(tf_idf_dataframe_smooth)
+        print(tf_idf_dataframe)
+
+        result = json.loads(tf_idf_dataframe.to_json(orient='table',index=False))['data'][0]
+        result_sorted = sorted(result.items(), key=lambda x: x[1], reverse=True)
+
+        green_score,green_words = calculate_green_score_v2(result_sorted)
+
+        return json.dumps((("green_score",green_score),("green_words",green_words),("all_words",all_words)))
+    except:
+        e = sys.exc_info()[0]
+        return json.dumps(f'Error: {e}'),500
 
 def save_stock_green_score():
     ticker = request.json["ticker"]
