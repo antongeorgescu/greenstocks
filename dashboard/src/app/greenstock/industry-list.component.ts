@@ -43,8 +43,8 @@ export class IndustryListComponent{
         this.router.navigate(["sub-industry/"+id]);
     }
 
-    onSubIndustryClick(ticker:string)
+    onSubIndustryClick(ticker:string,industry:string)
     {
-        this.router.navigate(["stocks/"+ticker]);
+        this.router.navigate(["stocks/"+ticker+":"+industry]);
     }
 } 

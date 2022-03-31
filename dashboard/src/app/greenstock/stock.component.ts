@@ -33,18 +33,21 @@ import { GreenStockService } from "../services/greenstock.service";
     `]
 })
 export class StockComponent{
+    stockDisplayName: any = ""
     stockName: any = ""
     stockScore: any;
     stockRank: string = "0";
     stockArticles: string = "";
     stockReferences: string = "0";
+    loading = true;
     constructor(private router:Router,private greenStockService:GreenStockService,
         private route:ActivatedRoute){}
     ngOnInit()
     {
         const id = this.route.snapshot.paramMap.get('id');
-        this.stockName = id;
-
+        this.stockName = id?.split(":")[0];
+        this.stockDisplayName = id?.split(":").join(" ( ");
+        this.stockDisplayName = this.stockDisplayName + " )";
         //0-4% Poor, 5-9% Decent,10 - 19% Good, over 20% Excellent
         this.greenStockService.getStocksScoreV2(this.stockName).subscribe((data:any) =>{
             this.stockScore = Math.round(parseFloat(data[0][1]) * 100);
@@ -65,16 +68,12 @@ export class StockComponent{
                     className = "btn-success";
                 }
             }
-
+            this.loading = false;
             this.domReady(className);
         });
 
         this.greenStockService.getStocksReferences(this.stockName).subscribe((data:any) =>{
-            this.stockReferences = data[0][1];
-        });
-
-        this.greenStockService.getStocksArticles(this.stockName).subscribe((data:any) =>{
-            this.stockArticles = data.length;
+            this.stockReferences = `Total Tokens: ${data[0][1]}, Green Tokens: ${data[1][1]}, Green Score: ${data[2][1]}, Green Density: ${data[4][1]}`;
         });
 
     }
