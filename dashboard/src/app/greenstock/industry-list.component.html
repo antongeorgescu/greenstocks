@@ -1,0 +1,22 @@
+<ng-container *ngIf="type=='Industry'">
+<div class="list-group">
+    <button type="button" (click)="gotoDashboard()" class="list-group-item list-group-item-action active">
+      <strong> < Industries </strong>
+    </button>
+    <button type="button" href="#" class="list-group-item list-group-item-action" *ngFor="let item of sectorsList; let i = index"
+    (click)="onClick(item.sector)">
+       {{item.sector}}
+    </button>
+  </div>
+</ng-container>
+<ng-container *ngIf="type=='SubIndustry'">
+  <div class="list-group">
+      <button type="button" (click)="gotoIndustry()" class="list-group-item list-group-item-action active">
+        <strong> < {{selectedIndustry}} - Sub Industries </strong>
+      </button>
+      <button type="button" href="#" class="list-group-item list-group-item-action" *ngFor="let item of sectorsList; let i = index"
+      (click)="onSubIndustryClick(item.ticker)">
+      {{item.ticker}} {{item.subindustry}}
+      </button>
+    </div>
+  </ng-container>

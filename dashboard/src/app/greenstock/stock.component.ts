@@ -20,9 +20,9 @@ import { GreenStockService } from "../services/greenstock.service";
         background: #F0EDFB;
         border-radius: 200px;
         color: black;
-        height: 200px;
+        height: 150px;
         font-weight: bold;
-        width: 200px;
+        width: 150px;
         display: table;
         margin: 20px auto;
     }

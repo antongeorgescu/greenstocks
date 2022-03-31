@@ -18,8 +18,8 @@ export class GreenStockService{
         return this.http.get(this.configService.config.API + "api/v1/resources/stocks/financials/"+ticker);
     }
 
-    getStocksRecommendations(ticker:any){
-        return this.http.get(this.configService.config.API + "api/v1/resources/stocks/recommendations/"+ticker);
+    getStocksHistory(ticker:any){
+        return this.http.get(this.configService.config.API + "api/v1/resources/stocks/history/"+ticker+"/3mo");
     }
 
     getStocksReferences(ticker:any){

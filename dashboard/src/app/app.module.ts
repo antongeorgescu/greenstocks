@@ -8,19 +8,21 @@ import { IndustryListComponent } from './greenstock/industry-list.component';
 import { DashboardComponent } from './dashboard.component';
 import { ConfigService } from './config.service';
 import { StockComponent } from './greenstock/stock.component';
-
+import { FutureGraphComponent } from './greenstock/fgraph.component';
+import { ChartModule } from 'angular-highcharts';
 export function init_app(configService: ConfigService) {
   return () => configService.load();
 }
 
 @NgModule({
   declarations: [
-    AppComponent, IndustryListComponent, DashboardComponent,StockComponent
+    AppComponent, IndustryListComponent, DashboardComponent,StockComponent,FutureGraphComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    ChartModule
   ],
   providers: [GreenStockService,ConfigService,
     {

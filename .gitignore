@@ -146,7 +146,6 @@ coldstore/
 
 # Other
 *.lnk
-*.html
 
 #reactjs
 node_modules

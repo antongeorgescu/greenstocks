@@ -1,0 +1,44 @@
+<button type="button" (click)="gotoDashboard()" class="list-group-item list-group-item-action active">
+    <strong> < {{stockName}} </strong>
+  </button>
+  <div class="section">
+    <div class="row" style="height: 20px;"></div>
+    <button type="button" id="scoreRankDisplay" class="btn btn-primary btn-lg">{{stockRank}}</button>
+    <div class="row" style="height: 25%;">
+      <div class="col-md-4 block">
+        <div class="circle">
+            <p>{{stockScore}} / 100</p>
+        </div>
+    </div>
+    </div>
+    <div class="row" style="height: 55%;">
+      <div class="col-md-12 block">
+        <fgraph></fgraph>
+    </div>
+    </div>
+    <div class="row" style="width:100%;height: 55px;background-color:#F0EDFB;">
+        <div class="col-md-12 text-center">
+            <strong>{{stockReferences}} green references in {{stockArticles}} articles</strong>
+        </div>
+        
+    </div>
+  </div>
+  
+  
+  
+  
+  
+  
+  
+  <!--
+  <div class="jumbotron text-center" style="height: 50px;">
+    <div class="row" style="height: 100%;"></div>
+    <button type="button" class="btn btn-primary btn-lg">{{stockRank}}</button>
+  </div>
+<div class="row" style="height: 100%;">
+
+</div>
+<div class="row" style="height: 20px;">
+{{stockScore}}
+</div>
+-->
