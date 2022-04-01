@@ -51,7 +51,6 @@ export class StockComponent{
         //0-4% Poor, 5-9% Decent,10 - 19% Good, over 20% Excellent
         this.greenStockService.getStocksScoreV2(this.stockName).subscribe((data:any) =>{
             this.stockScore = Math.round(parseFloat(data[0][1]) * 100);
-            console.log(this.stockScore);
             var className = ""
             if(data[0][0] == "green_score") {
                 if(this.stockScore <= 4) {
