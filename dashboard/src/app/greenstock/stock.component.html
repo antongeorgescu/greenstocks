@@ -2,12 +2,15 @@
     <strong> < {{stockName}} </strong>
   </button>
   <div class="section">
-    <div class="row" style="height: 20px;"></div>
+    <div class="row" style="height: 20px;">
+      <p class="text-success shadow p-3 mb-5 bg-body rounded"><b>Stock Green Level</b></p>
+    </div>
+    <div class="row" style="height: 40px;"></div>
     <button type="button" id="scoreRankDisplay" class="btn btn-primary btn-lg">{{stockRank}}</button>
     <div class="row" style="height: 25%;">
       <div class="col-md-4 block">
         <div class="circle">
-            <p>{{stockScore}} / 100</p>
+            <p>{{stockScore}} / 100<br/>green focus</p>
         </div>
     </div>
     </div>
