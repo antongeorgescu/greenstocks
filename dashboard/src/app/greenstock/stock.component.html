@@ -6,18 +6,25 @@
 </div>
 <div *ngIf="loading == false" class="section">
   <div class="row" style="height: 20px;"></div>
-    <button type="button" id="scoreRankDisplay" class="btn btn-primary btn-lg">{{stockRank}}</button>
+    <button type="button" id="scoreRankDisplay" class="btn btn-primary btn-lg">Green Score: {{stockRank}}</button>
     <div class="row" style="height: 25%;">
       <div class="col-md-4 block">
-        <div class="circle">
+        <div id="scoreCircle">
           <p>{{stockScore}} / 100</p>
       </div>
     </div>
   </div>
 </div>
 <fgraph *ngIf="loading == false"></fgraph>
-  <div *ngIf="loading == false" class="d-flex align-items-end">
-    <div class="text-center" style="width:100%;height: 55px;background-color:#F0EDFB;">
-        <strong>{{stockReferences}}</strong>
-    </div>
+<div *ngIf="loading == false" class="d-flex align-items-end">
+  <div class="text-center" style="width:100%;height: 55px;color: white; background-color:#2a7e06;">
+      <strong>{{stockReferences}}</strong>
+  </div>
 </div>
+<div class="row" style="height: 5px;"></div>
+<div *ngIf="loading == false" class="d-flex align-items-end">
+  <div class="text-center" style="width:100%;height: 75px;background-color:#F0EDFB;">
+      <strong>Stock <span id="stockName" class="clsStockName">{{stockName}}</span> forecast: {{stockAction0}}<br/>{{stockAction1}}<br/>{{stockAction2}}</strong>
+  </div>
+</div>
+

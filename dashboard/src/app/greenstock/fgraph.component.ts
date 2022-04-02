@@ -2,6 +2,8 @@ import { Component } from "@angular/core";
 import { Chart } from 'angular-highcharts';
 import { GreenStockService } from "../services/greenstock.service";
 
+
+
 @Component({
     selector: 'fgraph',
     templateUrl: './fgraph.component.html'
@@ -11,25 +13,34 @@ export class FutureGraphComponent {
     chartDate:any = [];
     chart:any = null;
     xAxisData:any = [];
+    stockName:any = "";
+    webService:any = null;
     constructor(private greenStockService:GreenStockService) {
-      this.greenStockService.getStocksHistory("CLNE").subscribe((data:any)=>{
-            this.data = data;
-            this.data.forEach((val:any) =>{
-              val.Date = val.Date.split('T')[0];
-              this.xAxisData.push(val.Date);
-              this.chartDate.push(val.Close);
-            });
-            this.drawChart();
-        })
+      this.webService = greenStockService;
+      (async () => {await this.waitForElem(".clsStockName")})();
+      this.stockName = "CLNE";
+      this.getChartData();
+    }
+
+    getChartData(){
+      this.webService.getStocksHistory(this.stockName).subscribe((data:any)=>{
+        this.data = data;
+        this.data.forEach((val:any) =>{
+          val.Date = val.Date.split('T')[0];
+          this.xAxisData.push(val.Date);
+          this.chartDate.push(val.Close);
+        });
+        this.drawChart();
+      })
     }
 
     drawChart() {
-     this.chart = new Chart({
+      this.chart = new Chart({
         chart: {
           type: 'line'
         },
         title: {
-          text: 'Stock History'
+          text: 'Stock History (last 3 months)'
         },
         credits: {
           enabled: false
@@ -50,4 +61,29 @@ export class FutureGraphComponent {
         colors: ['#008000']
       });
     }
+
+    waitForElem(selector:any) : Promise<void> {
+      return new Promise(resolve => {
+          if (document.querySelector(selector)) {
+              return resolve(document.querySelector(selector));
+          }
+    
+          const observer = new MutationObserver(mutations => {
+              if (document.querySelector(selector)) {
+                  resolve(document.querySelector(selector));
+                  observer.disconnect();
+                  this.stockName = document.getElementById("stockName")?.innerText;
+                  if (this.stockName)
+                    this.getChartData();
+              }
+          });
+    
+          observer.observe(document.body, {
+              childList: true,
+              subtree: true
+          });
+      });
+    }
 }
+
+

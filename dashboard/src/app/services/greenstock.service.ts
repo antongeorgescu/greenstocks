@@ -33,4 +33,8 @@ export class GreenStockService{
     getStocksArticles(ticker:any){
         return this.http.get(this.configService.config.API + "api/v1/resources/stocks/news/"+ticker);
     }
+
+    getStockRecommendedAction(ticker:any){
+        return this.http.get(this.configService.config.API + "/api/v1/resources/stocks/recommendations/"+ticker);
+    }
 }
