@@ -16,7 +16,7 @@
       </button>
       <button type="button" href="#" class="list-group-item list-group-item-action" *ngFor="let item of sectorsList; let i = index"
       (click)="onSubIndustryClick(item.ticker)">
-      {{item.ticker}} {{item.subindustry}}
+      {{item.ticker}} ({{item.subindustry}})
       </button>
     </div>
   </ng-container>
