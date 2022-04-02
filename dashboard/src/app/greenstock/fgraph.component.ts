@@ -18,8 +18,6 @@ export class FutureGraphComponent {
     constructor(private greenStockService:GreenStockService) {
       this.webService = greenStockService;
       (async () => {await this.waitForElem(".clsStockName")})();
-      this.stockName = "CLNE";
-      this.getChartData();
     }
 
     getChartData(){

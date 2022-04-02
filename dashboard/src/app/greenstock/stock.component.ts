@@ -38,7 +38,8 @@ export class StockComponent{
     stockScore: any;
     stockRank: string = "0";
     stockArticles: string = "";
-    stockReferences: string = "0";
+    stockReferences0: string = "0";
+    stockReferences1: string = "0";
     loading = true;
     stockAction0: string = "";
     stockAction1: string = "";
@@ -97,7 +98,8 @@ export class StockComponent{
         });
 
         this.greenStockService.getStocksReferences(this.stockName).subscribe((data:any) =>{
-            this.stockReferences = `Total Tokens: ${data[0][1]}, Green Tokens: ${data[1][1]}, Green Score: ${data[2][1]}, Green Density: ${data[4][1]}`;
+            this.stockReferences0 = `Total Tokens: ${data[0][1]}, Green Tokens: ${data[1][1]}`;
+            this.stockReferences1 = `Green Score: ${data[2][1]}, Green Density: ${data[4][1]}`;
         });
 
     }
