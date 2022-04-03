@@ -17,7 +17,7 @@ export class FutureGraphComponent {
     webService:any = null;
     constructor(private greenStockService:GreenStockService) {
       this.webService = greenStockService;
-      (async () => {await this.waitForElem(".clsStockName")})();
+      (async () => {await this.waitForElement(".clsStockName")})();
     }
 
     getChartData(){
@@ -60,12 +60,15 @@ export class FutureGraphComponent {
       });
     }
 
-    waitForElem(selector:any) : Promise<void> {
+    waitForElement(selector:any) : Promise<void> {
+      // this observer based function takes as parameter a jquery class name attached to HTML element
       return new Promise(resolve => {
-          if (document.querySelector(selector)) {
+        // if respective selector is already loaded, return  
+        if (document.querySelector(selector)) {
               return resolve(document.querySelector(selector));
           }
     
+          // if selector is not loaded, create an observer
           const observer = new MutationObserver(mutations => {
               if (document.querySelector(selector)) {
                   resolve(document.querySelector(selector));
@@ -76,6 +79,7 @@ export class FutureGraphComponent {
               }
           });
     
+          // run the observer till selector is loaded
           observer.observe(document.body, {
               childList: true,
               subtree: true
