@@ -1,10 +1,10 @@
 # Greenstocks Investment Advisor (GIA)
 
 ## About GIA
-_Greenstocks Investment Advisor (GIA) is an online application powered by machine learning algorithms, that facilitates reliable stock market investments in companies that implement a high Environmental, Social and Governance policy._
+_Greenstocks Investment Advisor (GIA) is an online application powered by machine learning algorithms, that facilitates reliable stock market investments in companies that implement a high Environmental, Social and Governance (ESG) policy._
 
 ## What is ESG Investing
-_ESG stands for Environmental, Social, and Governance. Investors are increasingly applying these non-financial factors as part of their analysis process to identify material risks and growth opportunities._ ESG metrics are not commonly part of mandatory financial reporting, though companies are increasingly making disclosures in their annual report or in a standalone sustainability report. Numerous institutions, such as the Sustainability Accounting Standards Board (SASB), the Global Reporting Initiative (GRI), and the Task Force on Climate-related Financial Disclosures (TCFD) are working to form standards and define materiality to facilitate incorporation of these factors into the investment process.
+_Investors interested in ESG are increasingly applying these non-financial factors as part of their analysis process to identify material risks and growth opportunities._ ESG metrics are not commonly part of mandatory financial reporting, though companies are increasingly making disclosures in their annual report or in a standalone sustainability report. Numerous institutions, such as the Sustainability Accounting Standards Board (SASB), the Global Reporting Initiative (GRI), and the Task Force on Climate-related Financial Disclosures (TCFD) are working to form standards and define materiality to facilitate incorporation of these factors into the investment process.
 
 ![ESG_Explained](https://user-images.githubusercontent.com/6631390/161564529-8be8cf16-98a6-47b4-90d8-818cae6eebb4.JPG)
 
