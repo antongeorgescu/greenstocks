@@ -1,20 +1,20 @@
 # Greenstocks Investment Advisor (GIA)
 
 ## About GIA
-<u>Greenstocks Investment Advisor (GIA) is an online application powered by machine learning algorithms, that facilitates reliable stock uet investments in companies that implement a high Environmental, Social and Governance policy.</u>
+_Greenstocks Investment Advisor (GIA) is an online application powered by machine learning algorithms, that facilitates reliable stock market investments in companies that implement a high Environmental, Social and Governance policy._
 
 ## What is ESG Investing
-<u>ESG stands for Environmental, Social, and Governance. Investors are increasingly applying these non-financial factors as part of their analysis process to identify material risks and growth opportunities.</u> ESG metrics are not commonly part of mandatory financial reporting, though companies are increasingly making disclosures in their annual report or in a standalone sustainability report. Numerous institutions, such as the Sustainability Accounting Standards Board (SASB), the Global Reporting Initiative (GRI), and the Task Force on Climate-related Financial Disclosures (TCFD) are working to form standards and define materiality to facilitate incorporation of these factors into the investment process.
+_ESG stands for Environmental, Social, and Governance. Investors are increasingly applying these non-financial factors as part of their analysis process to identify material risks and growth opportunities._ ESG metrics are not commonly part of mandatory financial reporting, though companies are increasingly making disclosures in their annual report or in a standalone sustainability report. Numerous institutions, such as the Sustainability Accounting Standards Board (SASB), the Global Reporting Initiative (GRI), and the Task Force on Climate-related Financial Disclosures (TCFD) are working to form standards and define materiality to facilitate incorporation of these factors into the investment process.
 
 ![ESG_Explained](https://user-images.githubusercontent.com/6631390/161564529-8be8cf16-98a6-47b4-90d8-818cae6eebb4.JPG)
 
 ## Machine Learning in Smart Finances
-<u>As an application of artificial intelligence, machine learning focuses on developing systems that can access pools of data, and the system automatically adjusts its parameters to improve experiences. Computer systems run operations in the background and produce outcomes automatically according to how it is trained.Nowadays, many leading fintech and financial services companies are incorporating machine learning into their operations, resuting in a better-streamlined process, reduced risks, and better-optimized portfolios.</u>
+_As an application of artificial intelligence, machine learning focuses on developing systems that can access pools of data, and the system automatically adjusts its parameters to improve experiences. Computer systems run operations in the background and produce outcomes automatically according to how it is trained.Nowadays, many leading fintech and financial services companies are incorporating machine learning into their operations, resuting in a better-streamlined process, reduced risks, and better-optimized portfolios._
 
-<u>Our Greenstocks Investment Advisor tool allows intelligent Stock Trading Portfolio Management by using advanced machine learning algorithms from Natural Language Processing (NLP) space.</u>
+_Our Greenstocks Investment Advisor tool allows intelligent Stock Trading Portfolio Management by using advanced machine learning algorithms from Natural Language Processing (NLP) space._
 
 ## Greenstocks Investment Advisor Features
-<u>While the user is in charge with selecting the industry, the secor and the stock, the application is doing the rest: it calcuates the <i>green score</i> and provides investment recommendation.
+_While the user is in charge with selecting the industry, the secor and the stock, the application is doing the rest: it calcuates the <i>green score</i> and provides investment recommendation._
 
 The green scores are calcuated in two ways, for enhanced accuracy, and represenets the percentage of "green tokens" (driven by an ever growing dictionary) out of "article tokens." The current score categories are encoded to range of numbers (&) as following:
 
@@ -22,10 +22,10 @@ The green scores are calcuated in two ways, for enhanced accuracy, and represene
 * Decent: 5-9%
 * Good: 10-19%
 * Excelent: >= 20%
-</u>
+_
 ### Overall Functionality
-<u>Greenstocks Investment Advisor (GIA) is built as a simple,user friendly web application that allows the user, through only a few clicks, to discover and invest in stocks that comply to ESG policies.</u> Down below you can see a normal use of the prototype that we built.
-<u>Note:</u>&nbsp;Since this is only a prototype, we have left aside a bunch of features that are important and can be further developed, like:
+_Greenstocks Investment Advisor (GIA) is built as a simple,user friendly web application that allows the user, through only a few clicks, to discover and invest in stocks that comply to ESG policies._ Down below you can see a normal use of the prototype that we built.
+_Note:_&nbsp;Since this is only a prototype, we have left aside a bunch of features that are important and can be further developed, like:
 + Batch Inference that run batch jobs in the background (i.e. GIA Business Engine) to identify the shorter list of stocks with both ESG and ROI
 + Data persistance that saves both user preferences and high ESG/ROI stocks for further use and monitoring
 + Replace yFinance investment recommendation with a GIA contained ML algorithm that is using linear regression predictions applied to stock time series.
@@ -56,18 +56,18 @@ The following set of screenshots are captured from running GIA against an iPhone
 ## Design, Implementation and Deployment
 
 ### Basic Design
-<u>GIA design is N-tier, microservices based.</u> It includes the following functional layers:
-1. Web GIA Dashboard as single-page application (SPA) implemented with Anguar javascript framework</u>
-2. REST API layer implemented with Python Flask</u>
-3. Business Engine implemented with Python libraries (incl NPL library)</u>
-4. yFinance Stock Trading API </u>
-5. Web articles space</u>
+_GIA design is N-tier, microservices based._ It includes the following functional layers:
+1. Web GIA Dashboard as single-page application (SPA) implemented with Anguar javascript framework_
+2. REST API layer implemented with Python Flask_
+3. Business Engine implemented with Python libraries (incl NPL library)_
+4. yFinance Stock Trading API _
+5. Web articles space_
 
-<u>GIA Dashboard has a responsive design that allows it to adapt seamlessly to both desktop and mobile formats
+_GIA Dashboard has a responsive design that allows it to adapt seamlessly to both desktop and mobile formats
 Business Engine contains the MVC model functionality. It includes a powerfu Natural Language Processing (NLP) library based on Python NLTK (Matural Language Toolkit). <br/>
 NLTK is a leading platform for building Python programs to work with human language data. It provides easy-to-use interfaces to over 50 corpora and lexical resources such as WordNet, along with a suite of text processing libraries for classification, tokenization, stemming, tagging, parsing, and semantic reasoning, wrappers for industrial-strength NLP libraries, and an active discussion forum.
 GIA Business Engine has also a web scrapper, based on Python's BeautifuSoup package, that allows it to extract structured stock information from yFinance API. <br/>
-</u>
+_
 
 
 ![Basic_Design](https://user-images.githubusercontent.com/6631390/161576879-34cd90be-7bc3-43fb-8b77-70962586453e.jpg)
