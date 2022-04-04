@@ -64,10 +64,9 @@ _GIA design is N-tier, microservices based._ It includes the following functiona
 5. Web articles space_
 
 _GIA Dashboard has a responsive design that allows it to adapt seamlessly to both desktop and mobile formats
-Business Engine contains the MVC model functionality. It includes a powerfu Natural Language Processing (NLP) library based on Python NLTK (Matural Language Toolkit). <br/>
+Business Engine contains the MVC model functionality. It includes a powerfu Natural Language Processing (NLP) library based on Python NLTK (Matural Language Toolkit)._ <br/>
 NLTK is a leading platform for building Python programs to work with human language data. It provides easy-to-use interfaces to over 50 corpora and lexical resources such as WordNet, along with a suite of text processing libraries for classification, tokenization, stemming, tagging, parsing, and semantic reasoning, wrappers for industrial-strength NLP libraries, and an active discussion forum.
 GIA Business Engine has also a web scrapper, based on Python's BeautifuSoup package, that allows it to extract structured stock information from yFinance API. <br/>
-_
 
 
 ![Basic_Design](https://user-images.githubusercontent.com/6631390/161576879-34cd90be-7bc3-43fb-8b77-70962586453e.jpg)
