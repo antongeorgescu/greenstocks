@@ -9,20 +9,20 @@ _Investors interested in ESG are increasingly applying these non-financial facto
 ![ESG_Explained](https://user-images.githubusercontent.com/6631390/161564529-8be8cf16-98a6-47b4-90d8-818cae6eebb4.JPG)
 
 ## Machine Learning in Smart Finances
-_As an application of artificial intelligence, machine learning focuses on developing systems that can access pools of data, and the system automatically adjusts its parameters to improve experiences. Computer systems run operations in the background and produce outcomes automatically according to how it is trained.Nowadays, many leading fintech and financial services companies are incorporating machine learning into their operations, resuting in a better-streamlined process, reduced risks, and better-optimized portfolios._
+As an application of artificial intelligence, machine learning focuses on developing systems that can access pools of data, and the system automatically adjusts its parameters to improve experiences. Computer systems run operations in the background and produce outcomes automatically according to how it is trained._Nowadays, many leading fintech and financial services companies are incorporating machine learning into their operations, resuting in a better-streamlined process, reduced risks, and better-optimized portfolios.
 
-_Our Greenstocks Investment Advisor tool allows intelligent Stock Trading Portfolio Management by using advanced machine learning algorithms from Natural Language Processing (NLP) space._
+_Our Greenstocks Investment Advisor tool allows intelligent, ESG oriented Stock Trading Portfolio Management by using advanced machine learning algorithms from Natural Language Processing (NLP) space._
 
 ## Greenstocks Investment Advisor Features
 _While the user is in charge with selecting the industry, the secor and the stock, the application is doing the rest: it calcuates the <i>green score</i> and provides investment recommendation._
 
-The green scores are calcuated in two ways, for enhanced accuracy, and represenets the percentage of "green tokens" (driven by an ever growing dictionary) out of "article tokens." The current score categories are encoded to range of numbers (&) as following:
+_The green scores are calcuated in two ways, for enhanced accuracy, and represenets the percentage of "green tokens" (driven by an ever growing dictionary) out of "article tokens."_ The current score categories are encoded to range of numbers (&) as following:
 
 * Poor: 0-4%
 * Decent: 5-9%
 * Good: 10-19%
 * Excelent: >= 20%
-_
+
 ### Overall Functionality
 _Greenstocks Investment Advisor (GIA) is built as a simple,user friendly web application that allows the user, through only a few clicks, to discover and invest in stocks that comply to ESG policies._ Down below you can see a normal use of the prototype that we built.
 _Note:_&nbsp;Since this is only a prototype, we have left aside a bunch of features that are important and can be further developed, like:
