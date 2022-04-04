@@ -61,20 +61,20 @@ export class StockComponent{
             if(data[0][0] == "green_score") {
                 if(this.stockScore <= 4) {
                     this.stockRank = "Poor";
-                    circleClassNames="circle border border-danger"
+                    circleClassNames="circle border border-danger border-5"
                     className = "btn-danger";
                 }else if (this.stockScore >= 5 && this.stockScore <= 9){
                     this.stockRank = "Decent";
-                    circleClassNames="circle border border-warning"
+                    circleClassNames="circle border border-warning border-5"
                     className = "btn-warning";
                 }else if (this.stockScore >= 10 && this.stockScore <= 19){
                     this.stockRank = "Good";
-                    circleClassNames="circle border border-success"
+                    circleClassNames="circle border border-success border-5"
                     className = "btn-success";
                 }else{
                     this.stockRank = "Excellent";
                     className = "btn-success";
-                    circleClassNames="circle border border-success"
+                    circleClassNames="circle border border-success border-5"
                 }
             }
             this.loading = false;
